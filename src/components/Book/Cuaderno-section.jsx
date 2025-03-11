@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Plus } from "lucide-react";
 import CuadernoList from "../Book/Cuaderno-list";
-import CuadernoFormModal from "./cuaderno-form-modal";
+import CuadernoFormModal from "./Cuaderno-form-modal";
 import DocumentFormModal from "../Document/Document-form-modal";
 import DocumentList from "../Document/Document-list";
 
