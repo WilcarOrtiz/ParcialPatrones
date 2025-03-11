@@ -5,10 +5,14 @@ import Layout from "./Layout";
 /* EXPEDIENTE */
 import RecordsComponents from "./components/Record/RecordsComponents";
 import RecordsFormComponents from "./components/Record/RecordsFormComponents";
+import RecordsView from "./components/Record/RecordViewer";
 
 /* DESPACHOS */
 import DispatchsComponents from "./components/Dispatch/DispatchsComponent";
 import DispatchsFormComponents from "./components/Dispatch/DispatchsFormComponents";
+
+/*TABLA DE RETENCION DOCUMENTAL */
+import DocumentRetentionTable from "./components/DocumentRetentionTable/DocumentRetentionTable";
 
 function App() {
   return (
@@ -25,12 +29,11 @@ function App() {
           path="/account/despachos/new"
           element={<DispatchsFormComponents />}
         />
+        <Route path="/account/records/view" element={<RecordsView />} />
         <Route
-          path="/account/records/edit"
-          element={<RecordsFormComponents />}
+          path="/account/DocumentRetentionTable"
+          element={<DocumentRetentionTable />}
         />
-
-        <Route path="/account/places/:id" element={<RecordsFormComponents />} />
       </Route>
     </Routes>
   );

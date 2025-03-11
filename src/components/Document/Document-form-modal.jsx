@@ -23,13 +23,14 @@ const DocumentFormModal = ({
     observaciones: "",
   });
 
-  // Load document data if editing
   useEffect(() => {
     if (documentToEdit) {
       setDocumentData(documentToEdit);
     } else {
-      // Reset form but keep the cuaderno name
       setDocumentData({
+        origen: "",
+        Cuaderno: cuadernoName,
+        observaciones: "",
         nombre: "",
         fechaCreacion: "",
         fechaIncorporacion: "",
@@ -39,9 +40,6 @@ const DocumentFormModal = ({
         paginaFin: "",
         formato: "",
         tamanio: "",
-        origen: "",
-        Cuaderno: cuadernoName,
-        observaciones: "",
       });
     }
   }, [documentToEdit, cuadernoName]);
@@ -62,25 +60,145 @@ const DocumentFormModal = ({
           {documentToEdit ? "Editar Documento" : "Nuevo Documento"}
         </h2>
         <form>
-          {Object.keys(documentData).map(
-            (field) =>
-              field !== "id" && (
-                <div className="" key={field}>
-                  {" "}
-                  <label key={field} className="block mb-2">
-                    {field.charAt(0).toUpperCase() + field.slice(1)}:
-                    <input
-                      type={field.includes("fecha") ? "date" : "text"}
-                      name={field}
-                      value={documentData[field] || ""}
-                      onChange={handleInputChange}
-                      className="border rounded px-2 py-1 w-full mt-1"
-                      disabled={field === "Cuaderno"} // Make Cuaderno field read-only
-                    />
-                  </label>
-                </div>
-              )
-          )}
+          <div className="mb-3">
+            <label className="block mb-1">Nombre:</label>
+            <input
+              type="text"
+              name="nombre"
+              value={documentData.nombre}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Fecha de Creación:</label>
+            <input
+              type="date"
+              name="fechaCreacion"
+              value={documentData.fechaCreacion}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Fecha de Incorporación:</label>
+            <input
+              type="date"
+              name="fechaIncorporacion"
+              value={documentData.fechaIncorporacion}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Orden del Documento:</label>
+            <input
+              type="text"
+              name="ordenDocumento"
+              value={documentData.ordenDocumento}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Número de Páginas:</label>
+            <input
+              type="number"
+              name="numeroPaginas"
+              value={documentData.numeroPaginas}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Página de Inicio:</label>
+            <input
+              type="number"
+              name="paginaInicio"
+              value={documentData.paginaInicio}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Página Final:</label>
+            <input
+              type="number"
+              name="paginaFin"
+              value={documentData.paginaFin}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Formato:</label>
+            <select
+              name="formato"
+              value={documentData.formato}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            >
+              <option value="">Seleccione un formato</option>
+              <option value="PDF">PDF</option>
+              <option value="JPEG">JPEG</option>
+              <option value="TIFF">TIFF</option>
+              <option value="MP3">MP3</option>
+              <option value="XML">XML</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Tamaño:</label>
+            <input
+              type="text"
+              name="tamanio"
+              value={documentData.tamanio}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Origen:</label>
+            <select
+              name="origen"
+              value={documentData.origen}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full"
+            >
+              <option value="">Seleccione un origen</option>
+              <option value="electronico">Electrónico</option>
+              <option value="digitalizado">Digitalizado</option>
+            </select>
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Cuaderno:</label>
+            <input
+              type="text"
+              name="Cuaderno"
+              value={documentData.Cuaderno}
+              disabled
+              className="border rounded px-2 py-1 w-full bg-gray-200"
+            />
+          </div>
+
+          <div className="mb-3">
+            <label className="block mb-1">Observaciones:</label>
+            <textarea
+              name="observaciones"
+              value={documentData.observaciones}
+              onChange={handleInputChange}
+              className="border rounded px-2 py-1 w-full h-20"
+            />
+          </div>
 
           <div className="flex justify-between mt-4">
             <button

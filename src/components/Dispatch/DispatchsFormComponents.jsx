@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { Navigate } from "react-router-dom";
 import axios from "axios";
 import AccountNav from "../../AccountNav";
 
-
 const DispatchsFormComponents = () => {
-  const { id } = useParams();
   const [redirect, setRedirect] = useState(false);
   const [codigo, setCodigo] = useState("");
   const [nombre, setNombre] = useState("");
@@ -13,10 +11,16 @@ const DispatchsFormComponents = () => {
   const [departamento, setDepartamento] = useState("");
   const [ciudad, setCiudad] = useState("");
 
-  // Datos de departamentos y ciudades (puedes reemplazar esto con una API si deseas)
   const departamentos = {
     Amazonas: ["Leticia", "Puerto Nariño"],
-    Antioquia: ["Medellín", "Bello", "Envigado", "Itagüí", "Rionegro", "Apartadó"],
+    Antioquia: [
+      "Medellín",
+      "Bello",
+      "Envigado",
+      "Itagüí",
+      "Rionegro",
+      "Apartadó",
+    ],
     Arauca: ["Arauca", "Saravena", "Tame"],
     Atlántico: ["Barranquilla", "Soledad", "Malambo", "Sabanalarga"],
     Bolívar: ["Cartagena", "Magangué", "Turbaco", "El Carmen de Bolívar"],
@@ -25,10 +29,24 @@ const DispatchsFormComponents = () => {
     Caquetá: ["Florencia", "San Vicente del Caguán"],
     Casanare: ["Yopal", "Aguazul", "Villanueva", "Tauramena"],
     Cauca: ["Popayán", "Santander de Quilichao", "Puerto Tejada"],
-    Cesar: ["Valledupar", "Aguachica", "El Copey", "La Jagua de Ibirico", "Bosconia"],
+    Cesar: [
+      "Valledupar",
+      "Aguachica",
+      "El Copey",
+      "La Jagua de Ibirico",
+      "Bosconia",
+    ],
     Chocó: ["Quibdó", "Istmina", "Riosucio"],
     Córdoba: ["Montería", "Cereté", "Sahagún", "Lorica"],
-    Cundinamarca: ["Bogotá", "Soacha", "Zipaquirá", "Chía", "Facatativá", "Fusagasugá", "Girardot"],
+    Cundinamarca: [
+      "Bogotá",
+      "Soacha",
+      "Zipaquirá",
+      "Chía",
+      "Facatativá",
+      "Fusagasugá",
+      "Girardot",
+    ],
     Guainía: ["Inírida"],
     Guaviare: ["San José del Guaviare"],
     Huila: ["Neiva", "Pitalito", "Garzón", "La Plata"],
@@ -36,45 +54,51 @@ const DispatchsFormComponents = () => {
     Magdalena: ["Santa Marta", "Ciénaga", "Fundación", "El Banco"],
     Meta: ["Villavicencio", "Acacías", "Granada", "Puerto Gaitán"],
     Nariño: ["Pasto", "Ipiales", "Tumaco", "La Unión"],
-    NorteDeSantander: ["Cúcuta", "Ocaña", "Pamplona", "Los Patios", "Villa del Rosario"],
+    NorteDeSantander: [
+      "Cúcuta",
+      "Ocaña",
+      "Pamplona",
+      "Los Patios",
+      "Villa del Rosario",
+    ],
     Putumayo: ["Mocoa", "Puerto Asís", "Orito"],
     Quindío: ["Armenia", "Montenegro", "Circasia", "La Tebaida"],
-    Risaralda: ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "La Virginia"],
+    Risaralda: [
+      "Pereira",
+      "Dosquebradas",
+      "Santa Rosa de Cabal",
+      "La Virginia",
+    ],
     SanAndrésYProvidencia: ["San Andrés"],
-    Santander: ["Bucaramanga", "Floridablanca", "Barrancabermeja", "Girón", "San Gil"],
+    Santander: [
+      "Bucaramanga",
+      "Floridablanca",
+      "Barrancabermeja",
+      "Girón",
+      "San Gil",
+    ],
     Sucre: ["Sincelejo", "Corozal", "San Marcos"],
     Tolima: ["Ibagué", "Espinal", "Melgar", "Honda"],
-    ValleDelCauca: ["Cali", "Palmira", "Buenaventura", "Tuluá", "Buga", "Cartago"],
+    ValleDelCauca: [
+      "Cali",
+      "Palmira",
+      "Buenaventura",
+      "Tuluá",
+      "Buga",
+      "Cartago",
+    ],
     Vaupés: ["Mitú"],
-    Vichada: ["Puerto Carreño"]
+    Vichada: ["Puerto Carreño"],
   };
-  
-
-  useEffect(() => {
-    if (!id) return;
-
-    axios.get(`/places/${id}`).then((response) => {
-      const { data } = response.data;
-      setCodigo(data.codigo);
-      setNombre(data.nombre);
-      setCategoria(data.categoria);
-      setDepartamento(data.departamento);
-      setCiudad(data.ciudad);
-    });
-  }, [id]);
 
   async function savePlace(ev) {
     ev.preventDefault();
     const dispatchData = { codigo, nombre, categoria, departamento, ciudad };
 
-    if (id) {
-      await axios.put("/places/update", {
-        dispatchData: { id, ...dispatchData },
-      });
-    } else {
-      await axios.post("/places/register", { dispatchData });
+    {
+      /* REGISTRAR EL DESPACHO */
     }
-
+    alert(JSON.stringify(dispatchData, null, 2));
     setRedirect(true);
   }
 

@@ -19,6 +19,7 @@ const RecordsForm = () => {
   });
   const [demandantes, setDemandantes] = useState([]);
   const [demandados, setDemandados] = useState([]);
+  const [despacho, setDespacho] = useState("");
 
   useEffect(() => {
     if (expediente) {
@@ -52,9 +53,14 @@ const RecordsForm = () => {
     setPartes((prev) => prev.filter((_, i) => i !== index));
   };
 
+  // AQUI agregamos la función handleSubmit para guardar
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = {
+      demandantes,
+      demandados,
+      radicacion,
+      despacho,
       informacionFisica: {
         expedienteFisico,
         soporteFisico,
@@ -62,12 +68,9 @@ const RecordsForm = () => {
       },
       cuadernos: cuadernosData.cuadernos,
       documentos: cuadernosData.documentos,
-      demandantes,
-      demandados,
-      radicacion,
     };
-    console.log("Datos completos del formulario:", formData);
-    alert("Datos enviados. Revisa la consola para ver los detalles.");
+
+    alert(JSON.stringify(formData, null, 2));
   };
 
   const despachoNombres = [
@@ -106,11 +109,15 @@ const RecordsForm = () => {
             <label className="block mt-2 text-gray-600 text-sm font-medium mb-1">
               Despacho
             </label>
-            <select className="w-full p-2 border rounded-lg focus:ring-2 text-gray-500 focus:ring-gray-300 focus:outline-none">
+            <select
+              className="w-full p-2 border rounded-lg focus:ring-2 text-gray-500 focus:ring-gray-300 focus:outline-none"
+              value={despacho}
+              onChange={(e) => setDespacho(e.target.value)}
+            >
               <option value="">Seleccione un despacho</option>
-              {despachoNombres.map((despacho, index) => (
-                <option key={index} value={despacho}>
-                  {despacho}
+              {despachoNombres.map((despachoNombre, index) => (
+                <option key={index} value={despachoNombre}>
+                  {despachoNombre}
                 </option>
               ))}
             </select>
@@ -214,7 +221,7 @@ const RecordsForm = () => {
         <hr className="mt-4"></hr>
         <CuadernosSection updateParentData={setCuadernosData} />
 
-        {/* Botón de envío */}
+        {/* Botón de envío , ver el evento submit*/}
         <div className="mt-10 text-center">
           <button
             type="submit"

@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountNav from "../../AccountNav";
 import { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
+import { Eye, Trash, Download } from "lucide-react";
+import exportToExcel from "../../exportToExcel";
 
 const RecordsComponents = () => {
   const [places, setPlaces] = useState([]);
@@ -11,16 +13,100 @@ const RecordsComponents = () => {
     setTimeout(() => {
       const fakeData = [
         {
+          demandantes: [
+            {
+              tipo: "juridica",
+              identificacion: "1234567890",
+              nombre: "Wilcar",
+            },
+            {
+              tipo: "natural",
+              identificacion: "10828298923",
+              nombre: "Yaneth",
+            },
+          ],
+          demandados: [
+            { tipo: "natural", identificacion: "1200686152", nombre: "Daniel" },
+          ],
+          radicacion: "122333333",
+          despacho: "Juzgado Primero Civil Municipal",
           informacionFisica: {
-            expedienteFisico: true,
+            expedienteFisico: false,
             soporteFisico: true,
-            numCarpetas: 2,
+            numCarpetas: 1,
           },
           cuadernos: [
             {
-              id: 1741482588285,
-              name: "Cuaderno A",
-              description: "Notas del expediente A",
+              id: 1741640660576,
+              name: "Medidas previas",
+              description: "No me paga la plata",
+            },
+
+            {
+              id: 1741640660572,
+              name: "Medidas cautelares",
+              description: "No me paga la plata",
+            },
+          ],
+          documentos: [
+            {
+              nombre: "Documento por mala paga",
+              fechaCreacion: "2025-03-04",
+              fechalncorporacion: "2025-03-11",
+              ordenDocumento: "1",
+              numeroPaginas: "10",
+              paginalnicio: "1",
+              paginaFin: "10",
+              formato: "PDF",
+              tamanio: "10",
+              origen: "electronico",
+              Cuaderno: "Medidas previas",
+              observaciones: "sssss",
+            },
+
+            {
+              nombre: "Documento por mala paga",
+              fechaCreacion: "2025-03-04",
+              fechalncorporacion: "2025-03-11",
+              ordenDocumento: "1",
+              numeroPaginas: "10",
+              paginalnicio: "1",
+              paginaFin: "10",
+              formato: "PDF",
+              tamanio: "10",
+              origen: "electronico",
+              Cuaderno: "Medidas cautelares",
+              observaciones: "sssss",
+            },
+
+            {
+              nombre: "Documento por mala buena gente",
+              fechaCreacion: "2025-03-04",
+              fechalncorporacion: "2025-03-11",
+              ordenDocumento: "1",
+              numeroPaginas: "10",
+              paginalnicio: "1",
+              paginaFin: "10",
+              formato: "PDF",
+              tamanio: "10",
+              origen: "electronico",
+              Cuaderno: "Medidas cautelares",
+              observaciones: "sssss",
+            },
+
+            {
+              nombre: "Documento por mala cansona",
+              fechaCreacion: "2025-03-04",
+              fechalncorporacion: "2025-03-11",
+              ordenDocumento: "1",
+              numeroPaginas: "10",
+              paginalnicio: "1",
+              paginaFin: "10",
+              formato: "PDF",
+              tamanio: "10",
+              origen: "electronico",
+              Cuaderno: "Medidas previas",
+              observaciones: "sssss",
             },
           ],
         },
@@ -29,42 +115,10 @@ const RecordsComponents = () => {
     }, 1000);
   }, []);
 
-  const generarPDF = (item) => {
-    const doc = new jsPDF();
-    doc.setFont("helvetica", "bold");
-    doc.text("Información del Expediente", 10, 10);
-    doc.setFont("helvetica", "normal");
+  //METODOS DE EXPEDIENTE
 
-    doc.text(
-      `Expediente Físico: ${
-        item.informacionFisica.expedienteFisico ? "Sí" : "No"
-      }`,
-      10,
-      20
-    );
-    doc.text(
-      `Soporte Físico: ${item.informacionFisica.soporteFisico ? "Sí" : "No"}`,
-      10,
-      30
-    );
-    doc.text(
-      `Número de Carpetas: ${item.informacionFisica.numCarpetas}`,
-      10,
-      40
-    );
-
-    let yOffset = 50;
-    doc.text("Cuadernos:", 10, yOffset);
-    item.cuadernos.forEach((cuaderno, index) => {
-      yOffset += 10;
-      doc.text(
-        `${index + 1}. ${cuaderno.name} - ${cuaderno.description}`,
-        15,
-        yOffset
-      );
-    });
-
-    doc.save("Expediente.pdf");
+  const eliminarExpediente = () => {
+    console.log("Expediente eliminado");
   };
 
   return (
@@ -86,54 +140,69 @@ const RecordsComponents = () => {
               key={index}
               className="mb-3 flex justify-between items-center p-4 border border-gray-300 rounded-lg shadow-md bg-white"
             >
+              <h3 className="block text-gray-600 text-sm font-medium mb-1 mr-10">
+                Radicacion:
+                {item.radicacion}
+              </h3>
               <div className="w-2/3">
                 <h3 className="block text-gray-600 text-sm font-medium mb-1">
-                  Información Física
+                  <strong>Información Física:</strong>{" "}
                 </h3>
                 <p className="block text-gray-600 text-sm font-medium mb-1">
-                  <strong>Expediente Físico:</strong>{" "}
+                  Expediente Físico:{" "}
                   {item.informacionFisica.expedienteFisico ? "Sí" : "No"}
                 </p>
                 <p className="block text-gray-600 text-sm font-medium mb-1">
-                  <strong>Soporte Físico:</strong>{" "}
+                  Soporte Físico:{" "}
                   {item.informacionFisica.soporteFisico ? "Sí" : "No"}
                 </p>
                 <p className="block text-gray-600 text-sm font-medium mb-1">
-                  <strong>Número de Carpetas:</strong>{" "}
-                  {item.informacionFisica.numCarpetas}
+                  Número de Carpetas: {item.informacionFisica.numCarpetas}
                 </p>
               </div>
 
               <div className="w-1/3">
                 <h3 className="block text-gray-600 text-sm font-medium mb-1">
-                  Cuadernos
+                  <strong>Cuadernos</strong>
                 </h3>
                 {item.cuadernos.map((cuaderno) => (
                   <p
                     key={cuaderno.id}
                     className="block text-gray-600 text-sm font-medium mb-1"
                   >
-                    <strong>{cuaderno.name}:</strong> {cuaderno.description}
+                    {cuaderno.name}: {cuaderno.description}
                   </p>
                 ))}
               </div>
-              <div className="grid gap-4 w-3/12 pl-10">
-                <button
-                  className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-green-700 transition"
-                  onClick={() => generarPDF(item)}
-                >
-                  Descargar PDF
-                </button>
-                <button
-                  className="w-full px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-green-700 transition"
-                  onClick={() =>
-                    navigate("/account/records/edit", {
-                      state: { expediente: item },
-                    })
-                  }
-                >
-                  Editar
-                </button>
+              <div className="grid gap-4 pl-10">
+                <div className="flex gap-4">
+                  <button
+                    className="w-10 h-10 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-green-700 transition"
+                    onClick={() => {
+                      console.log("Exportando:", item), exportToExcel([item]);
+                    }}
+                  >
+                    <Download className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    className="w-10 h-10 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-green-700 transition"
+                    onClick={() =>
+                      navigate("/account/records/view", {
+                        state: { expediente: item },
+                      })
+                    }
+                  >
+                    <Eye className="w-5 h-5" />
+                  </button>
+
+                  <button
+                    className="w-10 h-10 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-red-700 transition"
+                    onClick={() => eliminarExpediente()}
+                  >
+                    <Trash className="w-5 h-5" />
+                  </button>
+                </div>
               </div>
             </div>
           ))}
