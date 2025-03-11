@@ -70,6 +70,7 @@ const RecordsForm = () => {
       documentos: cuadernosData.documentos,
     };
 
+    console.log("Datos del expediente", formData);
     alert(JSON.stringify(formData, null, 2));
   };
 
