@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, ChevronDown, ChevronUp, X } from "lucide-react";
+import { Plus, ChevronDown, ChevronUp } from "lucide-react";
 import SubseriesList from "./SubseriesList"; // Importa el componente hijo
 
 const SeriesComponent = () => {
@@ -22,9 +22,9 @@ const SeriesComponent = () => {
       descripcion: "Serie 2",
       subseries: [
         {
-          codigo: "001-2",
-          descripcion: "Subserie 1",
-          tipoDocumento: ["Documento A", "Documento B"],
+          codigo: "002-1",
+          descripcion: "Subserie 2",
+          tipoDocumento: ["Documento C", "Documento D"],
         },
       ],
     },
@@ -54,9 +54,10 @@ const SeriesComponent = () => {
   };
 
   return (
-    <div className="mt-10 w-3/4 bg-white shadow-xl rounded-lg p-5">
+    <div className="mt-10 w-3/4 bg-white shadow-xl rounded-lg p-5 mx-auto">
       {series.map((serie) => (
         <div key={serie.codigo} className="border-b last:border-none py-4">
+          {/* Contenedor de la serie */}
           <div className="flex justify-between items-center">
             <div className="flex pl-10 flex-wrap gap-x-10 items-center">
               <span className="text-gray-600 text-sm font-bold">
@@ -84,12 +85,17 @@ const SeriesComponent = () => {
             </div>
           </div>
 
+          {/* Contenedor de subseries centrado */}
           {expandedSeries[serie.codigo] && (
-            <SubseriesList
-              serie={serie}
-              setSeries={setSeries} // <-- Pasar setSeries
-              onAddSubserie={handleAddSubserie}
-            />
+            <div className="flex justify-center mt-4">
+              <div className="w-full max-w-2xl">
+                <SubseriesList
+                  serie={serie}
+                  setSeries={setSeries}
+                  onAddSubserie={handleAddSubserie}
+                />
+              </div>
+            </div>
           )}
         </div>
       ))}

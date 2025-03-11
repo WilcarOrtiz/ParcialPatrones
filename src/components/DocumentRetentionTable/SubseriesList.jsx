@@ -31,14 +31,17 @@ const SubseriesList = ({ serie, setSeries, onAddSubserie }) => {
 
   const handleSaveSubserie = () => {
     if (newSubserie.codigo && newSubserie.descripcion) {
+      //METODO PARA AGREGAR UNA GUARDAR UNA SUBSERIE
       console.log("nueva subserie", newSubserie);
       onAddSubserie(serie.codigo, newSubserie);
+
       closeModal();
     }
   };
 
   const handleSaveDocumento = () => {
     if (newDocumento.tipoDocumento && selectedSubserie) {
+      //METODO PARA AGREGAR UN TIPO DE DOCUMENTO A UNA SUBSERIE
       console.log(
         "Nuevo documento: ",
         newDocumento,
