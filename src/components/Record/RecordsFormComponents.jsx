@@ -20,6 +20,9 @@ const RecordsForm = () => {
   const [demandantes, setDemandantes] = useState([]);
   const [demandados, setDemandados] = useState([]);
   const [despacho, setDespacho] = useState("");
+  const [serie, setSerie] = useState("");
+  const [subserie, setSubserie] = useState("");
+  const [tipoDocumental, setTipoDocumental] = useState("");
 
   useEffect(() => {
     if (expediente) {
@@ -61,6 +64,7 @@ const RecordsForm = () => {
       demandados,
       radicacion,
       despacho,
+      serie,
       informacionFisica: {
         expedienteFisico,
         soporteFisico,
@@ -81,6 +85,88 @@ const RecordsForm = () => {
     "Corte Constitucional",
     "Juzgado Penal del Circuito",
   ];
+
+  const series = ["05", "270"];
+
+  const subseries = {
+    "05": ["15", "25"],
+    270: ["245"],
+  };
+
+  const tipoDocumentalList = {
+    15: [
+      "Solicitu hábeas corpus",
+      "Acta de reparto",
+      "Auto que decreta inspección",
+      "Comunicación de hábeas corpus",
+      "Entrevista",
+      "Fallo de habeas corpus",
+      "Escrito de Impugnación",
+      "Auto que admite impugnación",
+      "Providencia que resuelve impugnación",
+      "Auto que ordena devolución del expediente",
+      "Auto de obedézcase y cumplase o estese a lo resuelto",
+      "Notificación",
+    ],
+
+    25: [
+      "Acción de tutela",
+      "Acta de reparto",
+      "Auto que admite tutela",
+      "Auto para declarar incompetencia y remitir",
+      "Oficio de notificación correo certificado",
+      "Auto vinculando otros accionados",
+      "Contestación de tutela",
+      "Designación perito",
+      "Informe de perito",
+      "Contestación de tutela",
+      "Fallo de tutela",
+      "Notificación de tutela",
+      "Escrito de Impugnación",
+      "Auto que admite impugnación",
+      "Auto concediendo recurso",
+      "Prueba",
+      "Solicitud de pronunciamiento de las partes",
+      "Auto que resuelve recurso",
+      "Auto que ordena devolución del expediente",
+      "Auto de obedezca y cúmplase o estése a lo resuelto",
+      "Notificación",
+      "Sentencia de revisión Corte Constitucional",
+      "Solicitud de desacato",
+      "Desacato",
+      "Notificación de desacato",
+    ],
+
+    245: [
+      "Acta de reparto juzgado control de garantías",
+      "Manifestación de incompetencia por parte del juez",
+      "Oficio remisorio a reparto por competencia",
+      "Impedimento",
+      "Recusación",
+      "Suspensión",
+      "Desistimiento",
+      "Solicitud de mediación",
+      "Designación de mediador",
+      "Solicitud audiencia medidas cautelares sobre bienes",
+      "Audiencia medidas cautelares sobre bienes",
+      "Acta audiencia medidas cautelares sobre bienes",
+      "Solicitud legalización de incautación",
+      "Audiencia de incautación",
+      "Acta audiencia de incautación",
+      "Solicitud de levantamiento de medidas",
+      "Audiencia levantamiento medidas cautelares",
+      "Acta de audiencia de levantamiento",
+      "Solicitud de suspensión y cancelación de la personería jurídica",
+      "Solicitud de medidas cautelares sobre bienes",
+      "Audiencia decreto de embargo y secuestro",
+      "Audiencia de desembargo de bienes en medio magnético",
+      "Solicitud de control de legalidad por parte de la Fiscalía",
+      "Solicitud de declaratoria de persona ausente por parte de la Fiscalía",
+      "Audiencia de declaratoria de persona ausente",
+      "Acta de audiencia de declaratoria de persona ausente",
+      "Solicitud de medidas de protección y atención a víctimas",
+    ],
+  };
 
   return (
     <div>
@@ -125,8 +211,80 @@ const RecordsForm = () => {
           </div>
         </div>
 
-        {/* Partes Procesales */}
+        {/* Serie, Subserie y Tipo Documenntal*/}
+        <div className="p-0">
+          {/* Serie */}
+          <div>
+            <label className="block mt-2 text-gray-600 text-sm font-medium mb-1">
+              Serie
+            </label>
+            <select
+              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
+              value={serie}
+              onChange={(e) => {
+                setSerie(e.target.value);
+                setSubserie("");
+                setTipoDocumental("");
+              }}
+            >
+              <option value="">Seleccione una Serie</option>
+              {series.map((serieItem) => (
+                <option key={serieItem} value={serieItem}>
+                  {serieItem}
+                </option>
+              ))}
+            </select>
+          </div>
 
+          {/* Subserie */}
+          {serie && (
+            <div className="mt-4">
+              <label className="block text-gray-600 text-sm font-medium mb-1">
+                Subserie:
+              </label>
+              <select
+                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                value={subserie}
+                onChange={(e) => {
+                  setSubserie(e.target.value);
+                  setTipoDocumental("");
+                }}
+              >
+                <option value="">Seleccione una Subserie</option>
+                {subseries[serie].map((sub) => (
+                  <option key={sub} value={sub}>
+                    {sub}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Tipo Documental */}
+          {subserie && (
+            <div className="mt-4">
+              <label className="block text-gray-600 text-sm font-medium mb-1">
+                Tipo Documental:
+              </label>
+              <select
+                className={`w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none ${
+                  !subserie ? "bg-gray-100 cursor-not-allowed" : "bg-white"
+                }`}
+                value={tipoDocumental}
+                onChange={(e) => setTipoDocumental(e.target.value)}
+              >
+                <option value="">Seleccione un Tipo Documental</option>
+                {tipoDocumentalList[subserie]?.map((tipo) => (
+                  <option key={tipo} value={tipo}>
+                    {tipo}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Partes Procesales */}
         <div className="flex gap-8 mt-6 mb-6">
           {[
             {
