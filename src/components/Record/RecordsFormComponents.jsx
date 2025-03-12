@@ -212,57 +212,60 @@ const RecordsForm = () => {
         </div>
 
         {/* Serie, Subserie y Tipo Documenntal*/}
-        <div className="p-0">
-          {/* Serie */}
-          <div>
-            <label className="block mt-2 text-gray-600 text-sm font-medium mb-1">
-              Serie
-            </label>
-            <select
-              className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
-              value={serie}
-              onChange={(e) => {
-                setSerie(e.target.value);
-                setSubserie("");
-                setTipoDocumental("");
-              }}
-            >
-              <option value="">Seleccione una Serie</option>
-              {series.map((serieItem) => (
-                <option key={serieItem} value={serieItem}>
-                  {serieItem}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Subserie */}
-          {serie && (
-            <div className="mt-4">
+        <div className="mt-4">
+          {/* Serie y Subserie */}
+          <div className="flex gap-4">
+            {/* Serie */}
+            <div className="flex-1">
               <label className="block text-gray-600 text-sm font-medium mb-1">
-                Subserie:
+                Serie:
               </label>
               <select
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
-                value={subserie}
+                value={serie}
                 onChange={(e) => {
-                  setSubserie(e.target.value);
+                  setSerie(e.target.value);
+                  setSubserie("");
                   setTipoDocumental("");
                 }}
               >
-                <option value="">Seleccione una Subserie</option>
-                {subseries[serie].map((sub) => (
-                  <option key={sub} value={sub}>
-                    {sub}
+                <option value="">Seleccione una Serie</option>
+                {series.map((serieItem) => (
+                  <option key={serieItem} value={serieItem}>
+                    {serieItem}
                   </option>
                 ))}
               </select>
             </div>
-          )}
+
+            {/* Subserie */}
+            {serie && (
+              <div className="flex-1">
+                <label className="block text-gray-600 text-sm font-medium mb-1">
+                  Subserie:
+                </label>
+                <select
+                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                  value={subserie}
+                  onChange={(e) => {
+                    setSubserie(e.target.value);
+                    setTipoDocumental("");
+                  }}
+                >
+                  <option value="">Seleccione una Subserie</option>
+                  {subseries[serie].map((sub) => (
+                    <option key={sub} value={sub}>
+                      {sub}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
 
           {/* Tipo Documental */}
           {subserie && (
-            <div className="mt-4">
+            <div className="mt-3">
               <label className="block text-gray-600 text-sm font-medium mb-1">
                 Tipo Documental:
               </label>
