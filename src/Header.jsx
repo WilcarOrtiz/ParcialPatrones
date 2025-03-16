@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   return (
     <header className=" flex justify-between">
-      <Link to={"/"} className="flex items-center gap-1">
+      <Link to={'/'} className="flex items-center gap-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -12,17 +12,13 @@ const Header = () => {
           stroke="currentColor"
           className="w-8 h-8"
         ></svg>
-        <span className="font-bold text-xl">
-          {" "}
-          Consultar{" "}
-      
-        </span>
+        <span className="font-bold text-xl"> Consultar </span>
       </Link>
       <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-400">
         <div>Panel de administrador</div>
       </div>
       <Link
-        to={"/account/records"}
+        to={'/expedientes'}
         className="flex items-center gap-2 border border-gray-300 rounded-full py-2 px-4 "
       >
         <svg

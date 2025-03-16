@@ -1,29 +1,35 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import AccountNav from "../../AccountNav";
-import PhysicalInfoSection from "./PhysicalInfoSection";
-import CuadernosSection from "../Book/Cuaderno-section";
+import { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import swal from 'sweetalert';
+
+import AccountNav from '../../AccountNav';
+import PhysicalInfoSection from './PhysicalInfoSection';
+import CuadernosSection from '../Book/Cuaderno-section';
+import { MainContext } from '../../context/MainContex';
+import { Expediente } from '../../domain';
 
 const RecordsForm = () => {
   const location = useLocation();
   const expediente = location.state?.expediente || null;
 
+  const principal = useContext(MainContext);
+
   // Estados
   const [expedienteFisico, setExpedienteFisico] = useState(false);
   const [soporteFisico, setSoporteFisico] = useState(false);
   const [numCarpetas, setNumCarpetas] = useState(0);
-  const [radicacion, setRadicacion] = useState("");
+  const [radicacion, setRadicacion] = useState('');
   const [cuadernosData, setCuadernosData] = useState({
     cuadernos: [],
     documentos: [],
   });
   const [demandantes, setDemandantes] = useState([]);
   const [demandados, setDemandados] = useState([]);
-  const [despacho, setDespacho] = useState("");
+  const [despacho, setDespacho] = useState('');
 
   useEffect(() => {
     if (expediente) {
-      console.log("Expediente:", expediente);
+      console.log('Expediente:', expediente);
       setExpedienteFisico(expediente.informacionFisica.expedienteFisico);
       setSoporteFisico(expediente.informacionFisica.soporteFisico);
       setNumCarpetas(expediente.informacionFisica.numCarpetas);
@@ -39,7 +45,7 @@ const RecordsForm = () => {
   const handleAddParte = (setPartes) => {
     setPartes((prev) => [
       ...prev,
-      { tipo: "natural", identificacion: "", nombre: "" },
+      { tipo: 'natural', identificacion: '', nombre: '' },
     ]);
   };
 
@@ -56,31 +62,23 @@ const RecordsForm = () => {
   // AQUI agregamos la función handleSubmit para guardar
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      demandantes,
-      demandados,
+    const despachoEncontrado = principal.buscarDespacho(despacho);
+
+    const expediente = new Expediente(
       radicacion,
-      despacho,
-      informacionFisica: {
-        expedienteFisico,
-        soporteFisico,
-        numCarpetas: soporteFisico ? numCarpetas : 0,
-      },
-      cuadernos: cuadernosData.cuadernos,
-      documentos: cuadernosData.documentos,
-    };
+      expedienteFisico,
+      soporteFisico,
+      numCarpetas,
+      null,
+      demandados,
+      demandantes,
+      despachoEncontrado
+    );
 
-    console.log("Datos del expediente", formData);
-    alert(JSON.stringify(formData, null, 2));
+    despachoEncontrado.registrarExpediente(expediente);
+
+    swal('Registro exitoso', 'Expediente registrado exitosamente', 'success');
   };
-
-  const despachoNombres = [
-    "Juzgado Primero Civil Municipal",
-    "Juzgado Segundo de Familia",
-    "Tribunal Superior de Justicia",
-    "Corte Constitucional",
-    "Juzgado Penal del Circuito",
-  ];
 
   return (
     <div>
@@ -116,9 +114,9 @@ const RecordsForm = () => {
               onChange={(e) => setDespacho(e.target.value)}
             >
               <option value="">Seleccione un despacho</option>
-              {despachoNombres.map((despachoNombre, index) => (
-                <option key={index} value={despachoNombre}>
-                  {despachoNombre}
+              {principal.despachos.map((despacho) => (
+                <option key={despacho.codigo} value={despacho.codigo}>
+                  {despacho.nombre}
                 </option>
               ))}
             </select>
@@ -130,11 +128,11 @@ const RecordsForm = () => {
         <div className="flex gap-8 mt-6 mb-6">
           {[
             {
-              label: "Demandantes",
+              label: 'Demandantes',
               state: demandantes,
               setState: setDemandantes,
             },
-            { label: "Demandados", state: demandados, setState: setDemandados },
+            { label: 'Demandados', state: demandados, setState: setDemandados },
           ].map(({ label, state, setState }) => (
             <div key={label} className="w-1/2">
               <h3 className="block text-gray-600 text-sm font-medium mb-1">
@@ -147,7 +145,7 @@ const RecordsForm = () => {
                     onChange={(e) =>
                       handleChangeParte(
                         index,
-                        "tipo",
+                        'tipo',
                         e.target.value,
                         state,
                         setState
@@ -158,15 +156,15 @@ const RecordsForm = () => {
                     <option value="juridica">Jurídica</option>
                     <option value="entidad">Entidad del Estado</option>
                   </select>
-                  {parte.tipo !== "entidad" && (
+                  {parte.tipo !== 'entidad' && (
                     <input
                       type="text"
-                      placeholder={parte.tipo === "natural" ? "CC" : "NIT"}
+                      placeholder={parte.tipo === 'natural' ? 'CC' : 'NIT'}
                       value={parte.identificacion}
                       onChange={(e) =>
                         handleChangeParte(
                           index,
-                          "identificacion",
+                          'identificacion',
                           e.target.value,
                           state,
                           setState
@@ -181,7 +179,7 @@ const RecordsForm = () => {
                     onChange={(e) =>
                       handleChangeParte(
                         index,
-                        "nombre",
+                        'nombre',
                         e.target.value,
                         state,
                         setState

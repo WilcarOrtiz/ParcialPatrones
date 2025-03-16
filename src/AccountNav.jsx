@@ -1,19 +1,19 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 
 const AccountNav = () => {
   const { pathname } = useLocation();
-  let subpage = pathname.split("/")?.[2];
+  let subpage = pathname.split('/')?.[2];
 
   if (subpage === undefined) {
-    subpage = "profile";
+    subpage = 'profile';
   }
 
   function linkClasses(type = null) {
-    let classes = "inline-flex gap-1 py-2 px-8 rounded-full";
+    let classes = 'inline-flex gap-1 py-2 px-8 rounded-full';
     if (type === subpage) {
-      classes += " bg-primary text-white";
+      classes += ' bg-primary text-white';
     } else {
-      classes += " bg-gray-200";
+      classes += ' bg-gray-200';
     }
     return classes;
   }
@@ -21,7 +21,7 @@ const AccountNav = () => {
   return (
     <>
       <nav className="w-full flex justify-center mt-8 gap-2 mb-8">
-        <Link className={linkClasses("records")} to={"/account/records"}>
+        <Link className={linkClasses('records')} to={'/expedientes'}>
           {/*  Cambiar el nombre de la ruta*/}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,7 @@ const AccountNav = () => {
           Expediente
         </Link>
 
-        <Link className={linkClasses("despachos")} to={"/account/despachos"}>
+        <Link className={linkClasses('despachos')} to={'/despachos'}>
           {/*  Cambiar el nombre de la ruta*/}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,8 +60,8 @@ const AccountNav = () => {
         </Link>
 
         <Link
-          className={linkClasses("DocumentRetentionTable")}
-          to={"/account/DocumentRetentionTable"}
+          className={linkClasses('DocumentRetentionTable')}
+          to={'/DocumentRetentionTable'}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

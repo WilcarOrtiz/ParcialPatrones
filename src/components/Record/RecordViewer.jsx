@@ -1,11 +1,12 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const ExpedienteViewer = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const expediente = location.state?.expediente || null;
-  console.log("Expediente:", expediente);
+  console.log('Expediente:', expediente);
 
   if (!expediente) {
     return (
@@ -18,12 +19,14 @@ const ExpedienteViewer = () => {
   }
 
   // Asociamos documentos a sus respectivos cuadernos
-  const cuadernosConDocumentos = expediente.cuadernos.map((cuaderno) => ({
-    ...cuaderno,
-    documentos: expediente.documentos.filter(
-      (doc) => doc.Cuaderno === cuaderno.name
-    ),
-  }));
+  const cuadernosConDocumentos = expediente
+    .listarCuadernos()
+    .map((cuaderno) => ({
+      ...cuaderno,
+      documentos: expediente.documentos.filter(
+        (doc) => doc.Cuaderno === cuaderno.name
+      ),
+    }));
 
   return (
     <div className="p-6 mt-6 bg-gray-50 shadow-md rounded-lg border border-gray-300">
@@ -52,16 +55,16 @@ const ExpedienteViewer = () => {
       </h3>
       <div className="text-sm text-gray-700 border-b pb-2 mb-3">
         <p>
-          <strong>Expediente Físico:</strong>{" "}
-          {expediente.informacionFisica.expedienteFisico ? "Sí" : "No"}
+          <strong>Expediente Físico:</strong>{' '}
+          {expediente.informacionFisica.expedienteFisico ? 'Sí' : 'No'}
         </p>
         <p>
-          <strong>Soporte Físico:</strong>{" "}
-          {expediente.informacionFisica.soporteFisico ? "Sí" : "No"}
+          <strong>Soporte Físico:</strong>{' '}
+          {expediente.informacionFisica.soporteFisico ? 'Sí' : 'No'}
         </p>
         {expediente.informacionFisica.soporteFisico && (
           <p>
-            <strong>Número de Carpetas:</strong>{" "}
+            <strong>Número de Carpetas:</strong>{' '}
             {expediente.informacionFisica.numCarpetas}
           </p>
         )}
@@ -112,7 +115,7 @@ const ExpedienteViewer = () => {
               className="mt-2 border border-gray-300 rounded-md p-3 bg-white shadow-sm"
             >
               <summary className="font-medium cursor-pointer text-gray-800">
-                Cuaderno {index + 1}: {cuaderno.name || "Sin nombre"}
+                Cuaderno {index + 1}: {cuaderno.name || 'Sin nombre'}
               </summary>
               {cuaderno.documentos.length > 0 ? (
                 <ul className="list-none mt-2">
@@ -121,7 +124,7 @@ const ExpedienteViewer = () => {
                       key={docIndex}
                       className="border-b py-1 last:border-none"
                     >
-                      {doc.nombre}{" "}
+                      {doc.nombre}{' '}
                       <span className="text-gray-500">({doc.formato})</span>
                     </li>
                   ))}
