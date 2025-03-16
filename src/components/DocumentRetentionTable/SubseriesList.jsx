@@ -146,15 +146,20 @@ const SubseriesList = ({ serie, setSeries, onAddSubserie }) => {
                 <X size={20} />
               </button>
             </div>
+            
             <input
-              type="text"
+              type="number"
               placeholder="Código de Subserie"
               value={newSubserie.codigo}
               onChange={(e) =>
-                setNewSubserie({ ...newSubserie, codigo: e.target.value })
+                setNewSubserie({
+                  ...newSubserie,
+                  codigo: e.target.value.replace(/[^0-9]/g, ""), // Solo números
+                })
               }
               className="w-full border rounded-md p-1 mb-1"
             />
+
             <input
               type="text"
               placeholder="Descripción de Subserie"

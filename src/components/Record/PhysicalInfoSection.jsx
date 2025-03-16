@@ -69,12 +69,16 @@ const PhysicalInfoSection = ({
           {soporteFisico && (
             <div>
               <label className="block mb-2">Número de carpetas:</label>
+
               <input
                 type="number"
                 value={numCarpetas}
-                onChange={(e) =>
-                  setNumCarpetas(Number.parseInt(e.target.value, 10) || 0)
-                }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) {
+                    setNumCarpetas(value === "" ? 0 : Number(value));
+                  }
+                }}
                 min="0"
                 className="border rounded px-2 py-1 w-20"
               />

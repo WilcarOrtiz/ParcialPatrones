@@ -1,6 +1,6 @@
-import { useContext, useState } from 'react';
-import { Navigate } from 'react-router-dom';
-import swal from 'sweetalert';
+import { useContext, useState } from "react";
+import { Navigate } from "react-router-dom";
+import swal from "sweetalert";
 
 import {
   Categoria,
@@ -8,10 +8,10 @@ import {
   Departamento,
   Despacho,
   Ubicacion,
-} from '../../domain';
-import { ciudadesPorDepartamento } from '../../helpers/ciudadesPorDepartamento';
-import AccountNav from '../../AccountNav';
-import { MainContext } from '../../context/MainContex';
+} from "../../domain";
+import { ciudadesPorDepartamento } from "../../helpers/ciudadesPorDepartamento";
+import AccountNav from "../../AccountNav";
+import { MainContext } from "../../context/MainContex";
 
 const ciudadesYDepartamentos = ciudadesPorDepartamento();
 
@@ -19,11 +19,11 @@ const DispatchsFormComponents = () => {
   const principal = useContext(MainContext);
 
   const [redirect, setRedirect] = useState(false);
-  const [codigo, setCodigo] = useState('');
-  const [nombre, setNombre] = useState('');
-  const [categoria, setCategoria] = useState('municipal');
+  const [codigo, setCodigo] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [categoria, setCategoria] = useState("municipal");
   const [departamento, setDepartamento] = useState();
-  const [ciudadSeleccionada, setCiudadSeleccionada] = useState('');
+  const [ciudadSeleccionada, setCiudadSeleccionada] = useState("");
   const [ciudades, setCiudades] = useState([]);
 
   const onDepartamentoChanged = (event) => {
@@ -49,12 +49,12 @@ const DispatchsFormComponents = () => {
       )
     );
 
-    swal('Despacho registrado', 'Registro completado', 'success');
+    swal("Despacho registrado", "Registro completado", "success");
     setRedirect(true);
   }
 
   if (redirect) {
-    return <Navigate to={'/despachos'} />;
+    return <Navigate to={"/despachos"} />;
   }
 
   return (
@@ -68,10 +68,13 @@ const DispatchsFormComponents = () => {
               Código:
             </label>
             <input
-              type="text"
+              type="number"
               placeholder="Ejemplo: 12345"
               value={codigo}
-              onChange={(ev) => setCodigo(ev.target.value)}
+              onChange={(ev) => setCodigo(ev.target.value.replace(/\D/, ""))} // Evita caracteres no numéricos
+              onInput={(ev) =>
+                (ev.target.value = ev.target.value.replace(/[^0-9]/g, ""))
+              } // Restringe la entrada a números
               className="w-full p-2 border rounded-lg bg-white focus:ring-2 focus:ring-gray-300 focus:outline-none"
             />
           </div>
@@ -147,8 +150,8 @@ const DispatchsFormComponents = () => {
                   focus:ring-gray-300 focus:outline-none 
                   ${
                     !departamento
-                      ? 'bg-gray-100 cursor-not-allowed'
-                      : 'bg-white'
+                      ? "bg-gray-100 cursor-not-allowed"
+                      : "bg-white"
                   }`}
               >
                 <option value="">Seleccione una ciudad</option>
