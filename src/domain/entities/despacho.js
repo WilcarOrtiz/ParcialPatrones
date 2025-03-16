@@ -58,7 +58,7 @@ export class Despacho {
     console.log(first);
   }
 
-  registarExpediente(expediente) {
+  registrarExpediente(expediente) {
     this.#expedientes.push(expediente);
   }
 
