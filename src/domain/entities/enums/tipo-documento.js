@@ -1,4 +1,4 @@
-export const TipoDocumento = Object.freeze({
+export const ETipoDocumento = Object.freeze({
   ninguno: 'Ninguno',
   cedula: 'Cedula ciudadanía',
   pasaporte: 'Pasaporte',

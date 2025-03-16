@@ -5,6 +5,10 @@ export class Principal {
     this.#despachos = despachos;
   }
 
+  get despachos() {
+    return this.#despachos;
+  }
+
   registrarDespacho(despacho) {
     this.#despachos.push(despacho);
   }

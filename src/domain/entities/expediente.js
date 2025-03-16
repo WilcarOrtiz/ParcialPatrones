@@ -1,7 +1,7 @@
 export class Expediente {
   #numeroRadicacion;
   #expedienteFisico;
-  #soportefisico;
+  #soporteFisico;
   #numeroCarpetasFisicas;
   #cuadernos;
   #serie;
@@ -22,7 +22,7 @@ export class Expediente {
   ) {
     this.#numeroRadicacion = numeroRadicacion;
     this.#expedienteFisico = expedienteFisico;
-    this.#soportefisico = soportefisico;
+    this.#soporteFisico = soportefisico;
     this.#numeroCarpetasFisicas = numeroCarpetasFisicas;
     this.#cuadernos = [];
     this.#serie = serie;
@@ -41,15 +41,11 @@ export class Expediente {
   }
 
   get soportefisico() {
-    return this.#soportefisico;
+    return this.#soporteFisico;
   }
 
   get numeroCarpetasFisicas() {
     return this.#numeroCarpetasFisicas;
-  }
-
-  get serie() {
-    return this.#serie;
   }
 
   get demandados() {
@@ -73,15 +69,11 @@ export class Expediente {
   }
 
   set soportefisico(soportefisico) {
-    this.#soportefisico = soportefisico;
+    this.#soporteFisico = soportefisico;
   }
 
   set numeroCarpetasFisicas(numeroCarpetasFisicas) {
     this.#numeroCarpetasFisicas = numeroCarpetasFisicas;
-  }
-
-  set serie(serie) {
-    this.#serie = serie;
   }
 
   set demandados(demandados) {
@@ -154,5 +146,13 @@ export class Expediente {
 
   listarCuadernos() {
     return this.#cuadernos;
+  }
+
+  registrarSerie(serie) {
+    this.#serie = serie;
+  }
+
+  obtenerSerie() {
+    return this.#serie;
   }
 }
