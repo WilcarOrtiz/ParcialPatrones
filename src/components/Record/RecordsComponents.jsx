@@ -54,7 +54,7 @@ const RecordsComponents = () => {
   return (
     <div>
       <AccountNav />
-      <hr className="pt-3"></hr>
+     
       <div className="flex items-center justify-center gap-4 pb-3">
         <Link
           className="inline-flex gap-1 bg-primary text-white py-2 px-4 rounded-full"
