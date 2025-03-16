@@ -1,38 +1,11 @@
-import { Link } from "react-router-dom";
-import AccountNav from "../../AccountNav";
-import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
+import AccountNav from '../../AccountNav';
+import { useContext } from 'react';
+import { MainContext } from '../../context/MainContex';
+import { Ciudad, Departamento } from '../../domain';
 
 const DispatchsComponents = () => {
-  const [Despachos, setDespachos] = useState([]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      const fakeData = [
-        {
-          codigo: "1234567",
-          nombre: "Wilcar",
-          categoria: "distrital",
-          departamento: "Bolívar",
-          ciudad: "Magangué",
-        },
-        {
-          codigo: "2345678",
-          nombre: "Daniel",
-          categoria: "distrital",
-          departamento: "Bolívar",
-          ciudad: "Magangué",
-        },
-        {
-          codigo: "3456789",
-          nombre: "Ortiz",
-          categoria: "distrital",
-          departamento: "Bolívar",
-          ciudad: "Magangué",
-        },
-      ];
-      setDespachos(fakeData);
-    }, 1000);
-  }, []);
+  const principal = useContext(MainContext);
 
   return (
     <div className="container mx-auto p-6">
@@ -41,7 +14,7 @@ const DispatchsComponents = () => {
       <div className="text-center mb-6">
         <Link
           className="inline-flex gap-1 bg-primary text-white py-2 px-4 rounded-full"
-          to={"/account/despachos/new"}
+          to={'/despachos/new'}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -62,31 +35,34 @@ const DispatchsComponents = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {Despachos.length > 0 &&
-          Despachos.map((item) => (
-            <div
-              key={item.codigo}
-              className="block p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border"
-            >
-              <h2 className="text-lg font-semibold text-gray-800">
-                Código: <span className="font-normal">{item.codigo}</span>
-              </h2>
-              <p className="text-gray-700 mt-2">
-                <strong>Nombre:</strong> {item.nombre}
-              </p>
-              <p className="text-gray-600 mt-1">
-                <strong>Departamento:</strong> {item.departamento}
-              </p>
-              <p className="text-gray-600 mt-1">
-                <strong>Ciudad:</strong> {item.ciudad}
-              </p>
-              {item.address && (
-                <p className="text-sm text-gray-500 mt-3 italic">
-                  Dirección: {item.address}
+        {principal.despachos &&
+          principal.despachos.map((despacho) => {
+            return (
+              <div
+                key={despacho.codigo}
+                className="block p-6 bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 border"
+              >
+                <h2 className="text-lg font-semibold text-gray-800">
+                  Código: <span className="font-normal">{despacho.codigo}</span>
+                </h2>
+                <p className="text-gray-700 mt-2">
+                  <strong>Nombre:</strong> {despacho.nombre}
                 </p>
-              )}
-            </div>
-          ))}
+                <p className="text-gray-600 mt-1">
+                  <strong>Departamento:</strong>{' '}
+                  {Departamento[despacho.ubicacion.departamento]}
+                </p>
+                <p className="text-gray-600 mt-1">
+                  <strong>Ciudad:</strong> {Ciudad[despacho.ubicacion.ciudad]}
+                </p>
+                {despacho.address && (
+                  <p className="text-sm text-gray-500 mt-3 italic">
+                    Dirección: {despacho.address}
+                  </p>
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

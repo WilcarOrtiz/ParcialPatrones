@@ -1,115 +1,66 @@
-import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import axios from "axios";
-import AccountNav from "../../AccountNav";
+import { useContext, useState } from 'react';
+import { Navigate } from 'react-router-dom';
+import swal from 'sweetalert';
+
+import {
+  Categoria,
+  Ciudad,
+  Departamento,
+  Despacho,
+  Ubicacion,
+} from '../../domain';
+import { ciudadesPorDepartamento } from '../../helpers/ciudadesPorDepartamento';
+import AccountNav from '../../AccountNav';
+import { MainContext } from '../../context/MainContex';
+
+const ciudadesYDepartamentos = ciudadesPorDepartamento();
 
 const DispatchsFormComponents = () => {
-  const [redirect, setRedirect] = useState(false);
-  const [codigo, setCodigo] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [categoria, setCategoria] = useState("municipal");
-  const [departamento, setDepartamento] = useState("");
-  const [ciudad, setCiudad] = useState("");
+  const principal = useContext(MainContext);
 
-  const departamentos = {
-    Amazonas: ["Leticia", "Puerto Nariño"],
-    Antioquia: [
-      "Medellín",
-      "Bello",
-      "Envigado",
-      "Itagüí",
-      "Rionegro",
-      "Apartadó",
-    ],
-    Arauca: ["Arauca", "Saravena", "Tame"],
-    Atlántico: ["Barranquilla", "Soledad", "Malambo", "Sabanalarga"],
-    Bolívar: ["Cartagena", "Magangué", "Turbaco", "El Carmen de Bolívar"],
-    Boyacá: ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Puerto Boyacá"],
-    Caldas: ["Manizales", "La Dorada", "Chinchiná"],
-    Caquetá: ["Florencia", "San Vicente del Caguán"],
-    Casanare: ["Yopal", "Aguazul", "Villanueva", "Tauramena"],
-    Cauca: ["Popayán", "Santander de Quilichao", "Puerto Tejada"],
-    Cesar: [
-      "Valledupar",
-      "Aguachica",
-      "El Copey",
-      "La Jagua de Ibirico",
-      "Bosconia",
-    ],
-    Chocó: ["Quibdó", "Istmina", "Riosucio"],
-    Córdoba: ["Montería", "Cereté", "Sahagún", "Lorica"],
-    Cundinamarca: [
-      "Bogotá",
-      "Soacha",
-      "Zipaquirá",
-      "Chía",
-      "Facatativá",
-      "Fusagasugá",
-      "Girardot",
-    ],
-    Guainía: ["Inírida"],
-    Guaviare: ["San José del Guaviare"],
-    Huila: ["Neiva", "Pitalito", "Garzón", "La Plata"],
-    Guajira: ["Riohacha", "Maicao", "Fonseca", "San Juan del Cesar"],
-    Magdalena: ["Santa Marta", "Ciénaga", "Fundación", "El Banco"],
-    Meta: ["Villavicencio", "Acacías", "Granada", "Puerto Gaitán"],
-    Nariño: ["Pasto", "Ipiales", "Tumaco", "La Unión"],
-    NorteDeSantander: [
-      "Cúcuta",
-      "Ocaña",
-      "Pamplona",
-      "Los Patios",
-      "Villa del Rosario",
-    ],
-    Putumayo: ["Mocoa", "Puerto Asís", "Orito"],
-    Quindío: ["Armenia", "Montenegro", "Circasia", "La Tebaida"],
-    Risaralda: [
-      "Pereira",
-      "Dosquebradas",
-      "Santa Rosa de Cabal",
-      "La Virginia",
-    ],
-    SanAndrésYProvidencia: ["San Andrés"],
-    Santander: [
-      "Bucaramanga",
-      "Floridablanca",
-      "Barrancabermeja",
-      "Girón",
-      "San Gil",
-    ],
-    Sucre: ["Sincelejo", "Corozal", "San Marcos"],
-    Tolima: ["Ibagué", "Espinal", "Melgar", "Honda"],
-    ValleDelCauca: [
-      "Cali",
-      "Palmira",
-      "Buenaventura",
-      "Tuluá",
-      "Buga",
-      "Cartago",
-    ],
-    Vaupés: ["Mitú"],
-    Vichada: ["Puerto Carreño"],
+  const [redirect, setRedirect] = useState(false);
+  const [codigo, setCodigo] = useState('');
+  const [nombre, setNombre] = useState('');
+  const [categoria, setCategoria] = useState('municipal');
+  const [departamento, setDepartamento] = useState();
+  const [ciudadSeleccionada, setCiudadSeleccionada] = useState('');
+  const [ciudades, setCiudades] = useState([]);
+
+  const onDepartamentoChanged = (event) => {
+    const departamento = event.target.value;
+    setDepartamento(departamento);
+    setCiudades(ciudadesYDepartamentos[Departamento[departamento]] || []);
   };
 
-  async function savePlace(ev) {
+  async function guardarDespacho(ev) {
     ev.preventDefault();
-    const dispatchData = { codigo, nombre, categoria, departamento, ciudad };
 
-    {
-      /* REGISTRAR EL DESPACHO */
-    }
-    alert(JSON.stringify(dispatchData, null, 2));
+    const ciudad = Object.keys(Ciudad).find(
+      (ciudad) => Ciudad[ciudad] === ciudadSeleccionada
+    );
+
+    principal.registrarDespacho(
+      new Despacho(
+        codigo,
+        nombre,
+        categoria,
+        new Ubicacion(ciudad, departamento),
+        []
+      )
+    );
+
+    swal('Despacho registrado', 'Registro completado', 'success');
     setRedirect(true);
   }
 
   if (redirect) {
-    return <Navigate to={"/account/places"} />;
+    return <Navigate to={'/despachos'} />;
   }
 
   return (
     <div>
       <AccountNav />
-      <form className="mt-20 w-3/4 mx-auto" onSubmit={savePlace}>
+      <form className="mt-20 w-3/4 mx-auto" onSubmit={guardarDespacho}>
         <div className="flex flex-wrap gap-4 mt-4">
           {/* Código */}
           <div className="flex-1 min-w-[200px]">
@@ -149,8 +100,11 @@ const DispatchsFormComponents = () => {
               onChange={(ev) => setCategoria(ev.target.value)}
               className="w-full p-2 border rounded-lg bg-white focus:ring-2 focus:ring-gray-300 focus:outline-none"
             >
-              <option value="municipal">Municipal</option>
-              <option value="distrital">Distrital</option>
+              {Object.keys(Categoria).map((categoria) => (
+                <option key={categoria} value={categoria}>
+                  {Categoria[categoria]}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -164,13 +118,17 @@ const DispatchsFormComponents = () => {
               </label>
               <select
                 value={departamento}
-                onChange={(ev) => setDepartamento(ev.target.value)}
+                onChange={onDepartamentoChanged}
                 className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
               >
                 <option value="">Seleccione un departamento</option>
-                {Object.keys(departamentos).map((dep) => (
-                  <option key={dep} value={dep} className="p-2">
-                    {dep}
+                {Object.keys(Departamento).map((departamento) => (
+                  <option
+                    key={departamento}
+                    value={departamento}
+                    className="p-2"
+                  >
+                    {Departamento[departamento]}
                   </option>
                 ))}
               </select>
@@ -182,15 +140,20 @@ const DispatchsFormComponents = () => {
                 Ciudad:
               </label>
               <select
-                value={ciudad}
-                onChange={(ev) => setCiudad(ev.target.value)}
+                value={ciudadSeleccionada}
+                onChange={(ev) => setCiudadSeleccionada(ev.target.value)}
                 disabled={!departamento}
-                className={`w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none 
-        ${!departamento ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+                className={`w-full p-2 border rounded-lg focus:ring-2
+                  focus:ring-gray-300 focus:outline-none 
+                  ${
+                    !departamento
+                      ? 'bg-gray-100 cursor-not-allowed'
+                      : 'bg-white'
+                  }`}
               >
                 <option value="">Seleccione una ciudad</option>
                 {departamento &&
-                  departamentos[departamento].map((ciudad) => (
+                  ciudades.map((ciudad) => (
                     <option key={ciudad} value={ciudad} className="p-2">
                       {ciudad}
                     </option>
