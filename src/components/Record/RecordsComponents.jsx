@@ -1,11 +1,11 @@
-import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Eye, Search, Trash, Download } from "lucide-react";
-import swal from "sweetalert";
+import { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Eye, Search, Trash, Download } from 'lucide-react';
+import swal from 'sweetalert';
 
-import AccountNav from "../../AccountNav";
-import exportToExcel from "../../helpers/exportToExcel";
-import { MainContext } from "../../context/MainContex";
+import AccountNav from '../../AccountNav';
+import exportToExcel from '../../helpers/exportToExcel';
+import { MainContext } from '../../context/MainContex';
 
 const RecordsComponents = () => {
   const principal = useContext(MainContext);
@@ -19,10 +19,10 @@ const RecordsComponents = () => {
 
   const eliminarExpediente = (numeroRadicacion) => {
     swal({
-      title: "¿Seguro de esto?",
-      text: "No podrás recuperar este expediente",
-      icon: "warning",
-      buttons: ["Cancelar", "Aceptar"],
+      title: '¿Seguro de esto?',
+      text: 'No podrás recuperar este expediente',
+      icon: 'warning',
+      buttons: ['Cancelar', 'Aceptar'],
     }).then((isConfirm) => {
       if (isConfirm) {
         principal.despachos[numeroDespacho].eliminarExpediente(
@@ -34,19 +34,23 @@ const RecordsComponents = () => {
   };
 
   // BUSQUEDA DE UN EXPEDIENTE EN ESPECIFICO
-  const [NumeroRadicacionAbuscar, setNumeroRadicacionAbuscar] = useState("");
+  const [NumeroRadicacionAbuscar, setNumeroRadicacionAbuscar] = useState('');
 
   const handleSearch = () => {
     if (NumeroRadicacionAbuscar.length === 23) {
-      console.log("Realizando consulta con:", NumeroRadicacionAbuscar);
-      // AQUI REALIZA LA CONSULTA O EN SU DEBIDO CASO
-      // PUEDE FILTRAR LA LISTA DE EXPEDIENTE QUE SE ESTA MOSTRANDO ABAJO
+      console.log('Realizando consulta con:', NumeroRadicacionAbuscar);
+      setExpedientes((expedientes) =>
+        expedientes.filter(
+          (expediente) =>
+            expediente.numeroRadicacion === NumeroRadicacionAbuscar
+        )
+      );
     } else {
       swal({
-        title: "Número inválido",
-        text: "Debes ingresar exactamente los 23 números correspondiente a la radicación del expediente a buscar.",
-        icon: "error",
-        button: "Aceptar",
+        title: 'Número inválido',
+        text: 'Debes ingresar exactamente los 23 números correspondiente a la radicación del expediente a buscar.',
+        icon: 'error',
+        button: 'Aceptar',
       });
     }
   };
@@ -54,11 +58,11 @@ const RecordsComponents = () => {
   return (
     <div>
       <AccountNav />
-     
+
       <div className="flex items-center justify-center gap-4 pb-3">
         <Link
           className="inline-flex gap-1 bg-primary text-white py-2 px-4 rounded-full"
-          to={"/expedientes/new"}
+          to={'/expedientes/new'}
         >
           Agregar nuevo expediente
         </Link>
@@ -69,11 +73,14 @@ const RecordsComponents = () => {
             className=" border-b border-gray-400 focus:border-primary outline-none px-4 py-3 text-gray-700 placeholder-gray-400 bg-transparent text-lg"
             maxLength={23}
             value={NumeroRadicacionAbuscar}
-            onChange={(e) =>
-              setNumeroRadicacionAbuscar(
-                e.target.value.replace(/\D/g, "").slice(0, 23)
-              )
-            }
+            onChange={(e) => {
+              if (NumeroRadicacionAbuscar.length === 0) {
+                setExpedientes(principal.despachos[numeroDespacho].expedientes);
+              }
+              return setNumeroRadicacionAbuscar(
+                e.target.value.replace(/\D/g, '').slice(0, 23)
+              );
+            }}
             title="Debe ingresar exactamente 23 números"
           />
 
@@ -99,14 +106,14 @@ const RecordsComponents = () => {
                 </h3>
                 <div className="w-2/3">
                   <h3 className="block text-gray-600 text-sm font-medium mb-1">
-                    <strong>Información Física:</strong>{" "}
+                    <strong>Información Física:</strong>{' '}
                   </h3>
                   <p className="block text-gray-600 text-sm font-medium mb-1">
-                    Expediente Físico:{" "}
-                    {expediente.expedienteFisico ? "Sí" : "No"}
+                    Expediente Físico:{' '}
+                    {expediente.expedienteFisico ? 'Sí' : 'No'}
                   </p>
                   <p className="block text-gray-600 text-sm font-medium mb-1">
-                    Soporte Físico: {expediente.soporteFisico ? "Sí" : "No"}
+                    Soporte Físico: {expediente.soporteFisico ? 'Sí' : 'No'}
                   </p>
                   <p className="block text-gray-600 text-sm font-medium mb-1">
                     Número de Carpetas: {expediente.numeroCarpetasFisicas}
@@ -117,9 +124,9 @@ const RecordsComponents = () => {
                   <h3 className="block text-gray-600 text-sm font-medium mb-1">
                     <strong>Cuadernos</strong>
                   </h3>
-                  {expediente.listarCuadernos().map((cuaderno) => (
+                  {expediente.listarCuadernos().map((cuaderno, index) => (
                     <p
-                      key={cuaderno.id}
+                      key={index}
                       className="block text-gray-600 text-sm font-medium mb-1"
                     >
                       {cuaderno.name}: {cuaderno.description}

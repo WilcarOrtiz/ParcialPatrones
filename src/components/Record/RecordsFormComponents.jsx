@@ -1,12 +1,12 @@
-import { useState, useEffect, useContext } from "react";
-import { useLocation } from "react-router-dom";
-import swal from "sweetalert";
+import { useState, useEffect, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+import swal from 'sweetalert';
 
-import AccountNav from "../../AccountNav";
-import PhysicalInfoSection from "./PhysicalInfoSection";
-import CuadernosSection from "../Book/Cuaderno-section";
-import { MainContext } from "../../context/MainContex";
-import { Expediente } from "../../domain";
+import AccountNav from '../../AccountNav';
+import PhysicalInfoSection from './PhysicalInfoSection';
+import CuadernosSection from '../Book/Cuaderno-section';
+import { MainContext } from '../../context/MainContex';
+import { Expediente } from '../../domain';
 
 const RecordsForm = () => {
   const location = useLocation();
@@ -18,18 +18,18 @@ const RecordsForm = () => {
   const [expedienteFisico, setExpedienteFisico] = useState(false);
   const [soporteFisico, setSoporteFisico] = useState(false);
   const [numCarpetas, setNumCarpetas] = useState(0);
-  const [radicacion, setRadicacion] = useState("");
+  const [radicacion, setRadicacion] = useState('');
   const [cuadernosData, setCuadernosData] = useState({
     cuadernos: [],
     documentos: [],
   });
   const [demandantes, setDemandantes] = useState([]);
   const [demandados, setDemandados] = useState([]);
-  const [despacho, setDespacho] = useState("");
+  const [despacho, setDespacho] = useState('');
 
   useEffect(() => {
     if (expediente) {
-      console.log("Expediente:", expediente);
+      console.log('Expediente:', expediente);
       setExpedienteFisico(expediente.informacionFisica.expedienteFisico);
       setSoporteFisico(expediente.informacionFisica.soporteFisico);
       setNumCarpetas(expediente.informacionFisica.numCarpetas);
@@ -45,7 +45,7 @@ const RecordsForm = () => {
   const handleAddParte = (setPartes) => {
     setPartes((prev) => [
       ...prev,
-      { tipo: "natural", identificacion: "", nombre: "" },
+      { tipo: 'natural', identificacion: '', nombre: '' },
     ]);
   };
 
@@ -77,7 +77,7 @@ const RecordsForm = () => {
 
     despachoEncontrado.registrarExpediente(expediente);
 
-    swal("Registro exitoso", "Expediente registrado exitosamente", "success");
+    swal('Registro exitoso', 'Expediente registrado exitosamente', 'success');
   };
 
   return (
@@ -97,7 +97,7 @@ const RecordsForm = () => {
               type="text"
               value={radicacion}
               onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9]/g, ""); // Filtra solo números
+                const value = e.target.value.replace(/[^0-9]/g, ''); // Filtra solo números
                 if (value.length <= 23) {
                   setRadicacion(value);
                 }
@@ -105,9 +105,9 @@ const RecordsForm = () => {
               onBlur={() => {
                 if (radicacion.length !== 23) {
                   alert(
-                    "El número de radicación debe tener exactamente 23 dígitos."
+                    'El número de radicación debe tener exactamente 23 dígitos.'
                   );
-                  setRadicacion(""); // Limpia el campo si no tiene 23 dígitos
+                  setRadicacion(''); // Limpia el campo si no tiene 23 dígitos
                 }
               }}
               className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
@@ -135,91 +135,15 @@ const RecordsForm = () => {
           </div>
         </div>
 
-        {/* Serie, Subserie y Tipo Documenntal*/}
-        <div className="mt-4">
-          {/* Serie y Subserie */}
-          <div className="flex gap-4">
-            {/* Serie */}
-            <div className="flex-1">
-              <label className="block text-gray-600 text-sm font-medium mb-1">
-                Serie:
-              </label>
-              <select
-                className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
-                value={serie}
-                onChange={(e) => {
-                  setSerie(e.target.value);
-                  setSubserie("");
-                  setTipoDocumental("");
-                }}
-              >
-                <option value="">Seleccione una Serie</option>
-                {series.map((serieItem) => (
-                  <option key={serieItem} value={serieItem}>
-                    {serieItem}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Subserie */}
-            {serie && (
-              <div className="flex-1">
-                <label className="block text-gray-600 text-sm font-medium mb-1">
-                  Subserie:
-                </label>
-                <select
-                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none"
-                  value={subserie}
-                  onChange={(e) => {
-                    setSubserie(e.target.value);
-                    setTipoDocumental("");
-                  }}
-                >
-                  <option value="">Seleccione una Subserie</option>
-                  {subseries[serie].map((sub) => (
-                    <option key={sub} value={sub}>
-                      {sub}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
-
-          {/* Tipo Documental */}
-          {subserie && (
-            <div className="mt-3">
-              <label className="block text-gray-600 text-sm font-medium mb-1">
-                Tipo Documental:
-              </label>
-              <select
-                className={`w-full p-2 border rounded-lg focus:ring-2 focus:ring-gray-300 focus:outline-none ${
-                  !subserie ? "bg-gray-100 cursor-not-allowed" : "bg-white"
-                }`}
-                value={tipoDocumental}
-                onChange={(e) => setTipoDocumental(e.target.value)}
-              >
-                <option value="">Seleccione un Tipo Documental</option>
-                {tipoDocumentalList[subserie]?.map((tipo) => (
-                  <option key={tipo} value={tipo}>
-                    {tipo}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
-        </div>
-
         {/* Partes Procesales */}
         <div className="flex gap-8 mt-6 mb-6">
           {[
             {
-              label: "Demandantes",
+              label: 'Demandantes',
               state: demandantes,
               setState: setDemandantes,
             },
-            { label: "Demandados", state: demandados, setState: setDemandados },
+            { label: 'Demandados', state: demandados, setState: setDemandados },
           ].map(({ label, state, setState }) => (
             <div key={label} className="w-1/2">
               <h3 className="block text-gray-600 text-sm font-medium mb-1">
@@ -232,7 +156,7 @@ const RecordsForm = () => {
                     onChange={(e) =>
                       handleChangeParte(
                         index,
-                        "tipo",
+                        'tipo',
                         e.target.value,
                         state,
                         setState
@@ -243,15 +167,15 @@ const RecordsForm = () => {
                     <option value="juridica">Jurídica</option>
                     <option value="entidad">Entidad del Estado</option>
                   </select>
-                  {parte.tipo !== "entidad" && (
+                  {parte.tipo !== 'entidad' && (
                     <input
                       type="text"
-                      placeholder={parte.tipo === "natural" ? "CC" : "NIT"}
+                      placeholder={parte.tipo === 'natural' ? 'CC' : 'NIT'}
                       value={parte.identificacion}
                       onChange={(e) =>
                         handleChangeParte(
                           index,
-                          "identificacion",
+                          'identificacion',
                           e.target.value,
                           state,
                           setState
@@ -266,7 +190,7 @@ const RecordsForm = () => {
                     onChange={(e) =>
                       handleChangeParte(
                         index,
-                        "nombre",
+                        'nombre',
                         e.target.value,
                         state,
                         setState
