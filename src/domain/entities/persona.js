@@ -5,6 +5,9 @@ export class Persona extends EntidadProcesal {
   #numeroDocumento;
 
   constructor(nombre, tipoDocumento, numeroDocumento) {
+    if (new.target === Persona) {
+      throw new Error('Esta clase no puede ser instanciada');
+    }
     super(nombre);
     this.#tipoDocumento = tipoDocumento;
     this.#numeroDocumento = numeroDocumento;
