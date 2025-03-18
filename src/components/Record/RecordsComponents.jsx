@@ -145,17 +145,6 @@ const RecordsComponents = () => {
                     </button>
 
                     <button
-                      className="w-10 h-10 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-green-700 transition"
-                      onClick={() =>
-                        navigate('/expedientes/view', {
-                          state: { expediente },
-                        })
-                      }
-                    >
-                      <Eye className="w-5 h-5" />
-                    </button>
-
-                    <button
                       className="w-10 h-10 flex items-center justify-center bg-gray-800 text-white rounded-md hover:bg-red-700 transition"
                       onClick={() =>
                         eliminarExpediente(expediente.numeroRadicacion)
